@@ -26,16 +26,35 @@ app.get("/usuarios/1",(req, res)=>{
 });
 
 
+/*app.get("/usuarios/:id",(req, res)=>{
+    const {id}=req.params;
+    //const params = req.params;
+    //console.log(params);
+    //console.log(typeof(+id));
+    if(isNaN(id)){
+        res.status(400).send({error:"El id debe ser un numero"});
+        return;
+    };
+    const usuario= usuarios.find((usuario)=>usuario.id === +id);
+    res.status(200).send(usuario);
+    //res.status(200).send("probando");
+
+});*/
+
 app.get("/usuarios/:id",(req, res)=>{
     const {id}=req.params;
     //const params = req.params;
     //console.log(params);
-   const usuario= usuarios.find((usuario)=>usuario.id === +id);
-
-    //res.status(200).send("probando");
+    //console.log(typeof(+id));
+    const usuario= usuarios.find((usuario)=>usuario.id === +id);
+   if(usuario===undefined){
+    res.status(404).send({error:`el usuario con id ${id} no existe`});
+    return;
+   };
     res.status(200).send(usuario);
+    //res.status(200).send("probando");
+});//end point
 
-});
 
 app.listen(3000, ()=>{
     console.log("Servidor corriendo en http://localhost:3000")
