@@ -9,3 +9,12 @@ GET http://localhost:3000/usuarios/a
 ###
 GET http://localhost:3000/usuarios/5
 
+###
+POST http://localhost:3000/usuarios/
+content-type: application/json
+
+{
+    "nombre": "Lady",
+    "apellido": "Palacios Cabrera",
+    "email": "ladypc@gmail.com"
+}
