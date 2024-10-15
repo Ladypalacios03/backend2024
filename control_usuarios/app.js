@@ -57,13 +57,37 @@ app.get("/usuarios/:id",(req, res)=>{
     //res.status(200).send("probando");
 });//end point
 
-app.post("/usuarios", (req, res)=> {
+/*app.post("/usuarios", (req, res)=> {
 const {nombre, apellido, email}=req.body;
 usuarios.push({id: usuarios.length +1, nombre, apellido, email})
 res.status(201).send("El usuario se agrego correctamennte");
     //console.log(req.body);
     //res.send("Hola desde post!");
-}) // crear un nuevo recurso
+}) // crear un nuevo recurso*/
+
+// Crear un nuevo usuario
+app.post("/usuarios", (req, res) => {
+    const { nombre, apellido, email } = req.body;
+    
+    // 1. Validación de campos completos
+    if (!nombre || !apellido || !email) {
+        res.status(400).send({ error: "Todos los campos son obligatorios" });
+        return;
+    }
+    
+    // 2. Validación de email único
+    const emailExiste = usuarios.some((usuario) => usuario.email === email);
+    if (emailExiste) {
+        res.status(400).send({ error: "El email ya está registrado" });
+        return;
+    }
+    
+    // Agregar usuario si pasa las validaciones
+    const nuevoUsuario = { id: usuarios.length + 1, nombre, apellido, email };
+    usuarios.push(nuevoUsuario);
+    
+    res.status(201).send("El usuario se agregó correctamente");
+});
 
 
 app.listen(3000, ()=>{

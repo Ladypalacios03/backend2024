@@ -16,5 +16,5 @@ content-type: application/json
 {
     "nombre": "Lady",
     "apellido": "Palacios Cabrera",
-    "email": "ladypc@gmail.com"
+    "email": "ladypalaciosc@gmail.com"
 }
