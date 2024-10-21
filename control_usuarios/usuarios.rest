@@ -18,19 +18,30 @@ POST http://localhost:3000/usuarios/
 content-type: application/json
 
 {
-    "nombre": "Cristina",
+    "nombre": "maria",
     "apellido": "Cabrera",
-    "email": "cris@gmail.com"
+    "email": "maria@gmail.com"
 }
 //5
 
 ###
-PUT http://localhost:3000/usuarios/4
+PUT http://localhost:3000/usuarios/2
 content-type: application/json
 
 {
     "nombre": "fany",
     "apellido": "Palacios",
-    "email": "ladysc@gmail.com"
+    "email": "ladyrosa.86@gmail.com"
 }
 //put
+
+###
+PATCH http://localhost:3000/usuarios/1
+content-type: application/json
+
+{
+  "apellido": "Cabrera"
+}
+
+###
+DELETE http://localhost:3000/usuarios/1
