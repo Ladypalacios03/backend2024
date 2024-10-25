@@ -5,8 +5,14 @@ class Server{
     constructor (){
         this.app=express();
         this.port=3000;
-        this.app.use(express.json());
+        this. middlewares();
+        //this.app.use(express.json()); //Metodo express, es un middleware
         this.routes();
+    }
+
+
+    middlewares(){
+        this.app.use(express.json());
     }
 
     /*routes (){
