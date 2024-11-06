@@ -1,5 +1,6 @@
 const{request, response}=require('express');
 const pool = require('../db/connection');
+const { usersQueries } = require('../models/users');
 /*const users=[
     {id: 1, name: 'lady'},
     {id: 2, name: 'Sthefany'},
@@ -10,15 +11,15 @@ const pool = require('../db/connection');
   res.send(users);
 }*/
 
-const getAll=async(req=request, res=response)=>{
+const getAllUsers=async(req=request, res=response)=>{
   let conn;
   try{
     conn=await pool.getConnection();
-    const users=await conn.query('SELECT * FROM users');
+    const users=await conn.query(usersQueries.getAll);
     res.send(users);
 
   } catch(error){
-    res.status(500).send('Internal server error');
+    res.status(500).send(error);//'Internal server error'
     return;
   }finally{
     if(conn) conn.end();
@@ -27,7 +28,7 @@ const getAll=async(req=request, res=response)=>{
     //res.send(users);
 }
 
-const getById=(req=request, res=response)=>{
+const getUserById=async(req=request, res=response)=>{
     const {id}=req.params;
 
     if(isNaN(id)){
@@ -35,14 +36,27 @@ const getById=(req=request, res=response)=>{
         return;
       }
 
-      const user  = users.find(user => user.id === +id); 
+      let conn;
+      try{
+        conn=await pool.getConnection();
+        const user=conn.query(usersQueries.getById, [+id]);
 
-      if(!user){
-        res.status(404).send('User not found');
-        return;
+        if(!user){
+          res.status(404).send('User not found');
+          return;
+        }
+
+        res.send(user);
+
+      }catch(error){
+        res.status(500).send(error);
+
+      }finally{
+        if(conn) conn.end();
       }
 
-      res.send(user);
+
+      //const user  = users.find(user => user.id === +id); 
 
 }
 
@@ -111,7 +125,7 @@ const deleteUser = (req = request, res = response) => {
   res.send('User deleted');
 };
 
-module.exports = { getAll, getById, createUser, updateUser, deleteUser };
+module.exports = { getAllUsers, getUserById, createUser, updateUser, deleteUser };
 
 // TAREA que hice
 // Crear un nuevo usuario
