@@ -9,8 +9,11 @@ POST http://localhost:3000/users/
 Content-Type: application/json
 
 {
-  "name": "Fany"
+  "username": "Fany",
+  "password": "hola123",
+  "email": "fany@gmail.com"
 }
+
 
 ###
 PUT http://localhost:3000/users/1
