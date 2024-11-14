@@ -1,6 +1,9 @@
 const{request, response}=require('express');
+const bcrypt=require('bcrypt');
 const pool = require('../db/connection');
 const { usersQueries } = require('../models/users');
+
+const saltRounds=10;
 /*const users=[
     {id: 1, name: 'lady'},
     {id: 2, name: 'Sthefany'},
@@ -80,7 +83,10 @@ const createUser = async(req = request, res = response) => {
       return;
     }
 
-    const newUser=await conn.query(usersQueries.create, [username,password,email]);
+    const hashPassword= await bcrypt.hash(password, saltRounds);
+
+
+    const newUser=await conn.query(usersQueries.create, [username,hashPassword,email]);
 
     if(newUser.affecteRows===0){
       res.status(500).send('User not be created');
@@ -102,30 +108,39 @@ const createUser = async(req = request, res = response) => {
   //res.send('User created succesfully');
 }
 
-// Actualizar un usuario
-/*const updateUser = (req = request, res = response) => {
-  const {id} = req.params;
-  const {name} = req.body;
+const loginUser = async (req = request, res = response) => {
+  const {username, password} = req.body;
 
-  if (isNaN(id)) {
-      res.status(400).send('Invalid ID');
-      return;
+  if(!username || !password){
+    res.status(400).send('User and Password are mandatoty');
+    return;
   }
 
-  const user = users.find(user => user.id === +id);
+let conn;
+  try{
+    conn = await pool.getConnection();
 
-  if (!user) {
-      res.status(404).send('User not found');
-      return;
-  }
+    const user = await conn.query(usersQueries.getByUsername, [username]);
 
-  users.forEach(user=>{
-    if(user.id===+id){
-        user.name=name;
+    if (user.length === 0){
+      res.status(404).send('Bad username or password');
+      return
     }
-});
-res.send('user update succerfully');
-}*/
+
+    const passwordMatch = await bcrypt.compare(password, user[0].password);
+
+    if (!passwordMatch){
+      res.status(403).send('Bad username or password');
+    }
+
+    res.send('Loged in');
+
+  }catch(error){
+    res.status(500).send(error);
+  } finally{
+    if (conn) conn.end()
+  }
+}
 
 
 const updateUser = async (req = request, res = response) => {
@@ -197,71 +212,5 @@ let conn;
   res.send('User deleted');*/
 };
 
-module.exports = { getAllUsers, getUserById, createUser, updateUser, deleteUser };
+module.exports = { getAllUsers, getUserById, createUser,loginUser, updateUser, deleteUser };
 
-// TAREA que hice
-// Crear un nuevo usuario
-/*const createUser = (req = request, res = response) => {
-  const { name } = req.body;
-
-  if (!name) {
-      res.status(400).send('Name is required');
-      return;
-  }
-
-  const newUser = {
-      id: users.length + 1,
-      name
-  };
-
-  users.push(newUser);
-  res.status(201).send('El usuario se creo correctamente');
-};
-
-// Actualizar un usuario por ID
-const updateUser = (req = request, res = response) => {
-  const { id } = req.params;
-  const { name } = req.body;
-
-  if (isNaN(id)) {
-      res.status(400).send('Invalid ID');
-      return;
-  }
-
-  const user = users.find(user => user.id === +id);
-
-  if (!user) {
-      res.status(404).send('User not found');
-      return;
-  }
-
-  if (!name) {
-      res.status(400).send('Name is required');
-      return;
-  }
-
-  user.name = name;
-  res.send('El usuario se actualizo');
-};
-
-// Eliminar un usuario por ID
-const deleteUser = (req = request, res = response) => {
-  const { id } = req.params;
-
-  if (isNaN(id)) {
-      res.status(400).send('Invalid ID');
-      return;
-  }
-
-  const index = users.findIndex(user => user.id === +id);
-
-  if (index === -1) {
-      res.status(404).send('User not found');
-      return;
-  }
-
-  users.splice(index, 1);
-  res.status(204).send('El usuario se elimino');
-};*/
-
-//anterior: module.exports={getAll, getById};

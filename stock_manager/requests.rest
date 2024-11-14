@@ -9,9 +9,9 @@ POST http://localhost:3000/users/
 Content-Type: application/json
 
 {
-  "username": "Fany",
-  "password": "hola123",
-  "email": "fany@gmail.com"
+  "username": "Rosalia",
+  "password": "hola123456",
+  "email": "rosa@gmail.com"
 }
 
 
@@ -22,6 +22,21 @@ Content-Type: application/json
 {
   "username": "Lady"
 }
+
+###
+POST http://localhost:3000/users/login
+Content-Type: application/json
+
+{
+  "username": "Rosalia",
+  "password": "hola123456"
+}
+
+
+
+
+
+
 
 ###
 DELETE http://localhost:3000/users/2
