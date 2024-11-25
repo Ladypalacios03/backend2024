@@ -143,7 +143,7 @@ let conn;
 }
 
 
-const updateUser = async (req = request, res = response) => {
+/*const updateUser = async (req = request, res = response) => {
   const { id } = req.params;
   const { username } = req.body;
 
@@ -174,7 +174,47 @@ const updateUser = async (req = request, res = response) => {
   } finally {
       if (conn) conn.end();
   }
+};*/
+
+const updateUser = async (req = request, res = response) => {
+  const { id } = req.params;
+  const { username, password } = req.body;
+
+  if (isNaN(id) || !username || !password) {
+    res.status(400).send('Invalid request');
+    return;
+  }
+
+  let conn;
+  try {
+    conn = await pool.getConnection();
+
+    // Verificar si el usuario existe
+    const user = await conn.query(usersQueries.getById, [+id]);
+    if (user.length === 0) {
+      res.status(404).send('User not found');
+      return;
+    }
+
+    // Cifrar la nueva contraseña
+    const hashPassword = await bcrypt.hash(password, saltRounds);
+
+    // Actualizar usuario con la nueva contraseña cifrada
+    const result = await conn.query(usersQueries.update, [username, hashPassword, +id]);
+
+    if (result.affectedRows === 0) {
+      res.status(500).send('User could not be updated');
+      return;
+    }
+
+    res.send('User updated successfully');
+  } catch (error) {
+    res.status(500).send(error);
+  } finally {
+    if (conn) conn.end();
+  }
 };
+
 
 // Eliminar un usuario por ID
 const deleteUser = async(req = request, res = response) => {

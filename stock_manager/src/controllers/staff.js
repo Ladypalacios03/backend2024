@@ -1,9 +1,6 @@
 const {request, response} = require('express');
-//const bcrypt=require('bcrypt');
 const pool = require('../db/connection');
 const { staffQueries } = require('../models/staff');
-
-//const saltRounds=
 
 // Obtener todos los registros de staff
 const getAllStaff = async (req = request, res = response) => {
@@ -86,7 +83,8 @@ const createStaff = async (req = request, res = response) => {
             birth_date, 
             gender, 
             phone_number, 
-            email, address, 
+            email, 
+            address, 
             user_id
             ]);
         

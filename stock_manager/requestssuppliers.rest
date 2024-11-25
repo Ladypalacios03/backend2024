@@ -1,0 +1,33 @@
+###Mostrar todos los proveedores
+GET http://localhost:3000/suppliers/
+
+###Mostrar proveedores por ID
+GET http://localhost:3000/suppliers/PACL030117AN7
+
+### Agregar Proveedor
+POST http://localhost:3000/suppliers/
+Content-Type: application/json
+
+{
+  "rfc": "CACR850330CA1",
+  "name": "Proveedor Rosa",
+  "description": "Proveedor de productos",
+  "phone_number": "2871205060",
+  "email": "proveedorrosa@proveedor.com",
+  "address": "Calle Francisco I. Madero, Ciudad Tuxtepec"
+}
+
+### Actualizar Proveedor
+PUT http://localhost:3000/suppliers/PACL030117AN7
+Content-Type: application/json
+
+{
+  "name": "Proveedor 1",
+  "description": "Proveedor de servicios de tecnología",
+  "phone_number": "2871203046",
+  "email": "contacto@proveedorxyz.com",
+  "address": "Avenida Real 456, Ciudad Ejemplo"
+}
+
+###Eliminar Proveedor
+DELETE http://localhost:3000/suppliers/CACR850330CA1
