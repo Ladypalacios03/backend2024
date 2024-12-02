@@ -1,5 +1,7 @@
 const express=require('express');
 
+const usersRoutes=require('./routes/users');
+
 class Server{
     constructor(){
     this.app=express();
@@ -13,6 +15,7 @@ class Server{
     }
 
     routes(){
+        this.app.use('/users',usersRoutes);
     }
 
     start(){
