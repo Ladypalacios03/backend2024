@@ -1,1 +1,15 @@
 GET http://localhost:3000/users
+
+###Mostar usuario por ID
+GET http://localhost:3000/users/2
+
+### Agregar
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "first_name":"Sthefany",
+  "last_name": "Cabrea",
+  "email": "sthefany@gmail.com",
+  "password": "sthefany123"
+}
