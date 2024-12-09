@@ -1,1 +1,23 @@
 GET http://localhost:3000/pokemons
+
+###
+GET http://localhost:3000/pokemons/152
+
+###
+POST http://localhost:3000/pokemons
+Content-Type: application/json
+
+{
+    "name":"pikachuu"
+}
+
+###
+PUT  http://localhost:3000/pokemons/152
+Content-Type: application/json
+
+{
+    "name":"Picachu"
+}
+
+###
+DELETE  http://localhost:3000/pokemons/153

@@ -151,9 +151,9 @@ const destroyUser = async(req = request, res = response) => {
 
   let conn;
     try{
+     conn = await pool.getConnection();
       conn=await pool.getConnection();
           const [user]=await conn.query(userQueries.getById, [id]);
-
           if (!user) {
             res.status(400).send({message: 'user not found'});
             return;
