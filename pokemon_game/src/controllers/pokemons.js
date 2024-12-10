@@ -10,7 +10,7 @@ let conn;
     res.send(pokemons);
 
   } catch(err){
-    res.status(500).json(err);//'Internal server error'
+    res.status(500).json(err);
     return;
   }finally{
     if(conn) conn.end();
@@ -34,12 +34,10 @@ const  getPokemonById = async(req=request, res=response)=>{
 
 
       if(pokemons.length === 0){
-          res.status(404).send('pokemin not found')
+          res.status(404).send('Pokemon not found')
           return
       }
-
       res.send(pokemons)
-  
       } catch(err){
           res.status(500).send(err)
       } finally{
@@ -50,6 +48,19 @@ const  getPokemonById = async(req=request, res=response)=>{
 
 
 const get3RandomPokemons = async(req=request, res=response)=>{
+  let conn;
+  try{
+    conn=await pool.getConnection();
+
+    const pokemons = await conn.query(pokemonsModel.get3Random);
+
+    res.send(pokemons);
+
+  }catch(err){
+    res.status(500).json(err);
+  }finally{
+    if (conn) conn.end();
+  }
     
 }
 
@@ -81,8 +92,8 @@ const createPokemon = async(req=request, res=response)=>{
 
         res.status(201).send('Pokemon added successfully')
     
-        } catch(error){
-            res.status(500).send(error)
+        } catch(err){
+            res.status(500).send(err)
         } finally{
           if(conn) conn.end()
         }
@@ -93,13 +104,11 @@ const updatePokemon = async(req=request, res=response)=>{
   const {id} = req.params;
   const {name} = req.body;
 
-  // Validar que el id sea un número
   if (isNaN(id)){
       res.status(400).send('Invalid ID');
       return;   
   }
 
-  // Verificar que el campo name esté presente
   if (!name) {
       res.status(400).send('Name field is required');
       return;
@@ -107,9 +116,8 @@ const updatePokemon = async(req=request, res=response)=>{
 
   let conn;
   try { 
-      conn = await pool.getConnection();
 
-      // Verificar si el Pokémon existe
+      conn = await pool.getConnection();
       const pokemon_exist = await conn.query(pokemonsModel.getById, [id]);
 
       if (pokemon_exist.length === 0) {
@@ -117,18 +125,16 @@ const updatePokemon = async(req=request, res=response)=>{
           return;
       }
 
-      // Actualizar el nombre del Pokémon
       const updateResult = await conn.query(pokemonsModel.updatePokemon, [name, id]);
 
-      // Verificar si la actualización tuvo éxito
       if (updateResult.affectedRows === 0) {
           res.status(500).send('Failed to update Pokemon');
           return;
       }
 
       res.status(200).send('Pokemon updated successfully');
-  } catch (error) {
-      res.status(500).send(error);
+  } catch (err) {
+      res.status(500).send(err);
   } finally {
       if (conn) conn.end();
   }
