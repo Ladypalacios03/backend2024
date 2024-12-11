@@ -1,9 +1,18 @@
 const{request, response}=require('express');
 const bcrypt=require('bcrypt');
+const jwt = require('jsonwebtoken')
 const pool=require('../db/connection');
 const userQueries = require('../models/users');
+require('dotenv').config();
+
+const secret = process.env.SECRET;
+
 
 const SALT_ROUNDS = 10;
+
+const userProtected = async (req=request, res=response)=>{
+    res.send({message: "You have access!!"});
+}
 
 
 const getAllUsers=async(req=request, res=response)=>{
@@ -179,5 +188,6 @@ module.exports = {
     getUser,
     updateUser,
     destroyUser,
+    userProtected,
 
 };
