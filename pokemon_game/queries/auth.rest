@@ -2,11 +2,11 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "email": "lady@gmail.com",
-    "password":"lady123"
+    "email": "jorge@gmail.com",
+    "password":"jorge123"
 }
 
 ###
 GET http://localhost:3000/users/protected
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzMzOTQwNTAyLCJleHAiOjE3MzM5NDA4MDJ9.ISad8k1WUA7vqw0oqRtbfr2eSXMkINX10Ru83XIqHkY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaXNfYWRtaW4iOjAsImlhdCI6MTczNDAyMTk0OCwiZXhwIjoxNzM0MDIyMjQ4fQ.RxzZcwNDb5aPxq8pYB-OS82CNIf3s7SyGzvISqfcoqA

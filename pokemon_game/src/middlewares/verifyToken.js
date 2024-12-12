@@ -15,8 +15,9 @@ const verifyToken = (req = request, res = response, next) =>{
 
     try{
         const payload = jwt.verify(token, secret);
+        console.log(payload);
         req.id = payload.id;
-        req.isAdmin = payload.isAdmin;
+        req.is_admin = payload.is_admin;
         next();
 
     }catch(err){
